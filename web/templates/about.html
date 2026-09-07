@@ -1,0 +1,363 @@
+{% extends "base.html" %}
+{% block title %}技术说明 - 民族服饰智能识别系统{% endblock %}
+
+{% block extra_css %}
+<style>
+    .tech-card {
+        height: 100%;
+    }
+    
+    .tech-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+    }
+    
+    .code-block {
+        background: rgba(0,0,0,0.4);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 10px;
+        padding: 1rem 1.2rem;
+        font-family: 'Consolas', 'Monaco', monospace;
+        font-size: 0.85rem;
+        line-height: 1.7;
+        color: #e2e8f0;
+        overflow-x: auto;
+        margin: 0.8rem 0;
+    }
+    
+    .code-block .comment {
+        color: #64748b;
+    }
+    
+    .code-block .keyword {
+        color: #c084fc;
+    }
+    
+    .code-block .string {
+        color: #86efac;
+    }
+    
+    .step-number {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--primary-gradient);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+    }
+    
+    .api-endpoint {
+        background: rgba(16, 185, 129, 0.08);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        border-radius: 8px;
+        padding: 0.8rem 1rem;
+        margin: 0.5rem 0;
+        font-family: monospace;
+        font-size: 0.88rem;
+    }
+    
+    .api-method {
+        display: inline-block;
+        padding: 0.15rem 0.5rem;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.75rem;
+        margin-right: 0.5rem;
+    }
+    
+    .method-post {
+        background: rgba(16, 185, 129, 0.2);
+        color: #10b981;
+    }
+    
+    .method-get {
+        background: rgba(59, 130, 246, 0.2);
+        color: #3b82f6;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1 class="page-title" data-aos="fade-right">技术说明</h1>
+        <p class="page-subtitle" data-aos="fade-right" data-aos-delay="100">
+            项目技术架构、使用说明与 API 文档
+        </p>
+    </div>
+</section>
+
+<!-- 技术架构 -->
+<section class="py-4">
+    <div class="container">
+        <h3 class="section-title" data-aos="fade-right"><i class="bi bi-diagram-3"></i>技术架构</h3>
+        <div class="section-divider"></div>
+        
+        <div class="row g-4 mb-4">
+            <div class="col-md-4" data-aos="fade-up">
+                <div class="glass-card tech-card p-4">
+                    <div class="tech-icon bg-gradient-blue">
+                        <i class="bi bi-braces"></i>
+                    </div>
+                    <h5 style="font-weight:700;margin-bottom:0.5rem;">后端框架</h5>
+                    <p style="color:var(--text-secondary);font-size:0.9rem;line-height:1.7;margin-bottom:0;">
+                        <strong>Flask 3.0</strong> — 轻量级 Python Web 框架，负责页面渲染、文件上传、API 接口和静态资源服务。
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="glass-card tech-card p-4">
+                    <div class="tech-icon bg-gradient-purple">
+                        <i class="bi bi-cpu"></i>
+                    </div>
+                    <h5 style="font-weight:700;margin-bottom:0.5rem;">AI 引擎</h5>
+                    <p style="color:var(--text-secondary);font-size:0.9rem;line-height:1.7;margin-bottom:0;">
+                        <strong>Qwen-VL-Plus</strong> — 阿里云通义千问多模态大模型，通过 DashScope API 调用，负责图像理解和服饰分类。
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="glass-card tech-card p-4">
+                    <div class="tech-icon bg-gradient-green">
+                        <i class="bi bi-window"></i>
+                    </div>
+                    <h5 style="font-weight:700;margin-bottom:0.5rem;">前端界面</h5>
+                    <p style="color:var(--text-secondary);font-size:0.9rem;line-height:1.7;margin-bottom:0;">
+                        <strong>Bootstrap 5</strong> + 原生 JavaScript，深色主题设计，响应式布局，支持拖拽上传和实时结果展示。
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 架构流程图 -->
+        <div class="glass-card p-4 mb-4" data-aos="fade-up">
+            <h5 style="font-weight:700;margin-bottom:1rem;"><i class="bi bi-arrow-left-right me-2"></i>识别流程</h5>
+            <div class="row g-3 align-items-center">
+                <div class="col-md text-center">
+                    <div class="tech-icon bg-gradient-blue mx-auto">
+                        <i class="bi bi-upload"></i>
+                    </div>
+                    <h6 style="font-weight:600;font-size:0.9rem;">1. 图片上传</h6>
+                    <small style="color:var(--text-secondary);">用户上传服饰图片</small>
+                </div>
+                <div class="col-md-1 text-center d-none d-md-block"><i class="bi bi-chevron-right" style="color:var(--accent-purple);"></i></div>
+                <div class="col-md text-center">
+                    <div class="tech-icon bg-gradient-purple mx-auto">
+                        <i class="bi bi-file-earmark-binary"></i>
+                    </div>
+                    <h6 style="font-weight:600;font-size:0.9rem;">2. Base64 编码</h6>
+                    <small style="color:var(--text-secondary);">图片转为 Base64 格式</small>
+                </div>
+                <div class="col-md-1 text-center d-none d-md-block"><i class="bi bi-chevron-right" style="color:var(--accent-purple);"></i></div>
+                <div class="col-md text-center">
+                    <div class="tech-icon bg-gradient-pink mx-auto">
+                        <i class="bi bi-cloud"></i>
+                    </div>
+                    <h6 style="font-weight:600;font-size:0.9rem;">3. API 调用</h6>
+                    <small style="color:var(--text-secondary);">调用 Qwen-VL-Plus API</small>
+                </div>
+                <div class="col-md-1 text-center d-none d-md-block"><i class="bi bi-chevron-right" style="color:var(--accent-purple);"></i></div>
+                <div class="col-md text-center">
+                    <div class="tech-icon bg-gradient-green mx-auto">
+                        <i class="bi bi-check2-circle"></i>
+                    </div>
+                    <h6 style="font-weight:600;font-size:0.9rem;">4. 结果返回</h6>
+                    <small style="color:var(--text-secondary);">解析 JSON 并展示结果</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 快速开始 -->
+<section class="py-4">
+    <div class="container">
+        <h3 class="section-title" data-aos="fade-right"><i class="bi bi-rocket-takeoff"></i>快速开始</h3>
+        <div class="section-divider"></div>
+        
+        <div class="glass-card p-4 mb-4" data-aos="fade-up">
+            <div class="d-flex gap-3 mb-3">
+                <div class="step-number">1</div>
+                <div>
+                    <h6 style="font-weight:700;margin-bottom:0.3rem;">克隆项目并安装依赖</h6>
+                    <p style="color:var(--text-secondary);font-size:0.88rem;margin-bottom:0.5rem;">从 GitHub 克隆仓库，使用 pip 安装 Python 依赖</p>
+                    <div class="code-block">
+<span class="comment"># 克隆项目</span>
+git clone https://github.com/your-username/ethnic-costume-recognition.git
+cd ethnic-costume-recognition
+
+<span class="comment"># 安装依赖</span>
+pip install -r requirements.txt
+                    </div>
+                </div>
+            </div>
+            
+            <div class="d-flex gap-3 mb-3">
+                <div class="step-number">2</div>
+                <div>
+                    <h6 style="font-weight:700;margin-bottom:0.3rem;">配置 API Key</h6>
+                    <p style="color:var(--text-secondary);font-size:0.88rem;margin-bottom:0.5rem;">
+                        在<a href="https://dashscope.console.aliyun.com/" target="_blank" style="color:var(--accent-purple);">阿里云百炼平台</a>获取 API Key，设置为环境变量
+                    </p>
+                    <div class="code-block">
+<span class="comment"># Windows (PowerShell)</span>
+<span class="keyword">$env</span>:DASHSCOPE_API_KEY = <span class="string">"your-api-key-here"</span>
+
+<span class="comment"># Windows (CMD)</span>
+set DASHSCOPE_API_KEY=your-api-key-here
+
+<span class="comment"># Linux / macOS</span>
+export DASHSCOPE_API_KEY=<span class="string">"your-api-key-here"</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="d-flex gap-3">
+                <div class="step-number">3</div>
+                <div>
+                    <h6 style="font-weight:700;margin-bottom:0.3rem;">启动服务</h6>
+                    <p style="color:var(--text-secondary);font-size:0.88rem;margin-bottom:0.5rem;">运行启动脚本，浏览器访问即可使用</p>
+                    <div class="code-block">
+<span class="comment"># 启动 Flask 服务</span>
+python web/app.py
+
+<span class="comment"># 浏览器访问</span>
+http://127.0.0.1:5000
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- API 文档 -->
+<section class="py-4 mb-4">
+    <div class="container">
+        <h3 class="section-title" data-aos="fade-right"><i class="bi bi-plug"></i>API 接口文档</h3>
+        <div class="section-divider"></div>
+        
+        <div class="glass-card p-4" data-aos="fade-up">
+            <!-- 健康检查 -->
+            <div class="mb-4">
+                <div class="api-endpoint">
+                    <span class="api-method method-get">GET</span>
+                    <code>/api/health</code>
+                    <span style="color:var(--text-secondary);margin-left:1rem;font-size:0.8rem;">健康检查</span>
+                </div>
+                <p style="color:var(--text-secondary);font-size:0.88rem;margin:0.5rem 0 0 1rem;">
+                    返回服务状态、API 配置状态和支持类别数
+                </p>
+            </div>
+            
+            <!-- 获取类别 -->
+            <div class="mb-4">
+                <div class="api-endpoint">
+                    <span class="api-method method-get">GET</span>
+                    <code>/api/classes</code>
+                    <span style="color:var(--text-secondary);margin-left:1rem;font-size:0.8rem;">获取所有类别</span>
+                </div>
+                <p style="color:var(--text-secondary);font-size:0.88rem;margin:0.5rem 0 0 1rem;">
+                    返回 55 个民族类别的详细信息（ID、中文名、英文名、拼音）
+                </p>
+            </div>
+            
+            <!-- 图片识别 -->
+            <div class="mb-4">
+                <div class="api-endpoint">
+                    <span class="api-method method-post">POST</span>
+                    <code>/api/detect</code>
+                    <span style="color:var(--text-secondary);margin-left:1rem;font-size:0.8rem;">上传图片识别</span>
+                </div>
+                <p style="color:var(--text-secondary);font-size:0.88rem;margin:0.5rem 0 0 1rem;">
+                    上传民族服饰图片，返回识别结果。Content-Type: multipart/form-data，字段名: image
+                </p>
+                <div class="code-block" style="margin-left:1rem;">
+<span class="comment"># 返回示例</span>
+{
+  <span class="string">"predicted_class"</span>: <span class="string">"维吾尔族"</span>,
+  <span class="string">"predicted_class_en"</span>: <span class="string">"Uyghur"</span>,
+  <span class="string">"confidence"</span>: 0.9456,
+  <span class="string">"analysis"</span>: <span class="string">"服饰色彩鲜艳，以红、绿、金为主..."</span>,
+  <span class="string">"features"</span>: [<span class="string">"艾德莱斯丝绸"</span>, <span class="string">"小花帽"</span>, ...],
+  <span class="string">"image_url"</span>: <span class="string">"/static/uploads/xxx.jpg"</span>,
+  <span class="string">"inference_time"</span>: 2.35
+}
+                </div>
+            </div>
+            
+            <!-- 示例图片识别 -->
+            <div>
+                <div class="api-endpoint">
+                    <span class="api-method method-post">POST</span>
+                    <code>/api/detect_sample</code>
+                    <span style="color:var(--text-secondary);margin-left:1rem;font-size:0.8rem;">识别示例图片</span>
+                </div>
+                <p style="color:var(--text-secondary);font-size:0.88rem;margin:0.5rem 0 0 1rem;">
+                    识别内置示例图片。Content-Type: application/json，Body: {"sample_path": "images/samples/xxx.jpg"}
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 项目结构 -->
+<section class="py-4 mb-4">
+    <div class="container">
+        <h3 class="section-title" data-aos="fade-right"><i class="bi bi-folder2-open"></i>项目结构</h3>
+        <div class="section-divider"></div>
+        
+        <div class="glass-card p-4" data-aos="fade-up">
+            <div class="code-block">
+ethnic-costume-recognition/
+├── web/
+│   ├── app.py                 <span class="comment"># Flask 应用主入口</span>
+│   ├── templates/             <span class="comment"># HTML 模板</span>
+│   │   ├── base.html          <span class="comment"># 基础布局模板</span>
+│   │   ├── index.html         <span class="comment"># 首页</span>
+│   │   ├── detection.html     <span class="comment"># 在线识别页面</span>
+│   │   ├── dataset.html       <span class="comment"># 数据集介绍页面</span>
+│   │   └── about.html         <span class="comment"># 技术说明页面</span>
+│   └── static/                <span class="comment"># 静态资源</span>
+│       ├── images/samples/    <span class="comment"># 示例图片</span>
+│       └── uploads/           <span class="comment"># 用户上传图片（运行时生成）</span>
+├── data/
+│   └── classes.json           <span class="comment"># 55 个民族类别数据</span>
+├── requirements.txt           <span class="comment"># Python 依赖</span>
+├── .gitignore                 <span class="comment"># Git 忽略规则</span>
+├── LICENSE                    <span class="comment"># MIT 开源协议</span>
+└── README.md                  <span class="comment"># 项目说明文档</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 注意事项 -->
+<section class="py-4 mb-4">
+    <div class="container">
+        <div class="glass-card p-4" data-aos="fade-up" style="border-left:4px solid var(--accent-orange);">
+            <h3 class="section-title"><i class="bi bi-exclamation-triangle"></i>注意事项</h3>
+            <div class="section-divider"></div>
+            <ul style="color:var(--text-secondary);font-size:0.92rem;line-height:2;padding-left:1.2rem;">
+                <li>本项目使用阿里云 DashScope API 进行图像识别，需要有效 API Key 才能使用识别功能</li>
+                <li>API 调用会产生费用，请参考<a href="https://help.aliyun.com/zh/model-studio/billing-for-qwen-vl" target="_blank" style="color:var(--accent-purple);">阿里云计费说明</a></li>
+                <li>请勿将 API Key 硬编码在代码中或提交到 Git 仓库，应使用环境变量管理</li>
+                <li>识别结果由 AI 模型生成，仅供参考，不保证 100% 准确</li>
+                <li>项目后续计划接入本地训练的 YOLOv5 目标检测模型，实现离线识别</li>
+            </ul>
+        </div>
+    </div>
+</section>
+{% endblock %}

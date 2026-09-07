@@ -1,0 +1,358 @@
+{% extends "base.html" %}
+{% block title %}首页 - 民族服饰智能识别系统{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-section {
+        padding: 5rem 0 4rem;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .hero-title {
+        font-size: 3rem;
+        font-weight: 800;
+        letter-spacing: -1.5px;
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.15rem;
+        color: var(--text-secondary);
+        line-height: 1.8;
+        margin-bottom: 2rem;
+        max-width: 600px;
+    }
+    
+    .hero-btn {
+        padding: 0.8rem 2rem;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .hero-btn-primary {
+        background: var(--primary-gradient);
+        color: #fff;
+        border: none;
+        box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+    }
+    
+    .hero-btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
+        color: #fff;
+    }
+    
+    .hero-btn-outline {
+        background: transparent;
+        color: var(--text-primary);
+        border: 1px solid rgba(255,255,255,0.15);
+    }
+    
+    .hero-btn-outline:hover {
+        border-color: rgba(102, 126, 234, 0.5);
+        background: rgba(102, 126, 234, 0.08);
+        color: #fff;
+    }
+    
+    .feature-card {
+        height: 100%;
+    }
+    
+    .feature-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-bottom: 1.2rem;
+    }
+    
+    .api-warning {
+        background: rgba(245, 158, 11, 0.1);
+        border: 1px solid rgba(245, 158, 11, 0.2);
+        border-radius: 12px;
+        padding: 1rem 1.5rem;
+        margin-top: 1.5rem;
+    }
+    
+    .api-success {
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        border-radius: 12px;
+        padding: 1rem 1.5rem;
+        margin-top: 1.5rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7" data-aos="fade-right">
+                <div class="badge-glow bg-gradient-purple mb-3" style="display:inline-block;">
+                    <i class="bi bi-stars me-1"></i>AI 驱动的民族服饰识别
+                </div>
+                <h1 class="hero-title">
+                    民族服饰<br>
+                    <span class="text-gradient">智能识别系统</span>
+                </h1>
+                <p class="hero-subtitle">
+                    基于多模态大模型技术，上传一张民族服饰图片，即可智能识别所属民族，
+                    支持 {{ total_classes }} 个民族类别，提供详细的服饰特征分析。
+                </p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="/detection" class="hero-btn hero-btn-primary">
+                        <i class="bi bi-search"></i>开始识别
+                    </a>
+                    <a href="/dataset" class="hero-btn hero-btn-outline">
+                        <i class="bi bi-database"></i>查看数据集
+                    </a>
+                </div>
+                
+                {% if api_configured %}
+                <div class="api-success">
+                    <i class="bi bi-check-circle-fill me-2" style="color:#10b981;"></i>
+                    <span style="font-size:0.9rem;">API 已配置，识别功能可用</span>
+                </div>
+                {% else %}
+                <div class="api-warning">
+                    <i class="bi bi-exclamation-triangle-fill me-2" style="color:#f59e0b;"></i>
+                    <span style="font-size:0.9rem;">未检测到 DASHSCOPE_API_KEY 环境变量，识别功能暂不可用。请配置 API Key 后使用。</span>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="col-lg-5 d-none d-lg-block" data-aos="fade-left" data-aos-delay="200">
+                <div class="glass-card p-4 float-animation">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <div class="feature-icon bg-gradient-purple" style="width:40px;height:40px;font-size:1.1rem;margin-bottom:0;">
+                            <i class="bi bi-eye"></i>
+                        </div>
+                        <span style="font-weight:600;">识别示例</span>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <div class="preview-container" style="border-radius:10px;overflow:hidden;">
+                                <img src="{{ url_for('static', filename='images/samples/uyghur_sample.jpg') }}" alt="维吾尔族" style="width:100%;height:120px;object-fit:cover;">
+                            </div>
+                            <small class="d-block text-center mt-1" style="color:var(--text-secondary);">维吾尔族</small>
+                        </div>
+                        <div class="col-6">
+                            <div class="preview-container" style="border-radius:10px;overflow:hidden;">
+                                <img src="{{ url_for('static', filename='images/samples/mongolian_sample.jpg') }}" alt="蒙古族" style="width:100%;height:120px;object-fit:cover;">
+                            </div>
+                            <small class="d-block text-center mt-1" style="color:var(--text-secondary);">蒙古族</small>
+                        </div>
+                        <div class="col-6">
+                            <div class="preview-container" style="border-radius:10px;overflow:hidden;">
+                                <img src="{{ url_for('static', filename='images/samples/kazakh_sample.jpg') }}" alt="哈萨克族" style="width:100%;height:120px;object-fit:cover;">
+                            </div>
+                            <small class="d-block text-center mt-1" style="color:var(--text-secondary);">哈萨克族</small>
+                        </div>
+                        <div class="col-6">
+                            <div class="preview-container" style="border-radius:10px;overflow:hidden;">
+                                <img src="{{ url_for('static', filename='images/samples/miao_sample.jpg') }}" alt="苗族" style="width:100%;height:120px;object-fit:cover;">
+                            </div>
+                            <small class="d-block text-center mt-1" style="color:var(--text-secondary);">苗族</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 统计数据 -->
+<section class="py-4">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-3 col-6" data-aos="fade-up">
+                <div class="glass-card stat-card">
+                    <div class="stat-icon bg-gradient-blue">
+                        <i class="bi bi-people"></i>
+                    </div>
+                    <div class="stat-value" data-animate-number data-target="{{ total_classes }}">0</div>
+                    <div class="stat-label">支持民族类别</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="glass-card stat-card">
+                    <div class="stat-icon bg-gradient-purple">
+                        <i class="bi bi-cpu"></i>
+                    </div>
+                    <div class="stat-value">Qwen-VL</div>
+                    <div class="stat-label">多模态大模型</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="glass-card stat-card">
+                    <div class="stat-icon bg-gradient-green">
+                        <i class="bi bi-lightning"></i>
+                    </div>
+                    <div class="stat-value">~3s</div>
+                    <div class="stat-label">平均识别耗时</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="glass-card stat-card">
+                    <div class="stat-icon bg-gradient-orange">
+                        <i class="bi bi-file-earmark-code"></i>
+                    </div>
+                    <div class="stat-value">MIT</div>
+                    <div class="stat-label">开源协议</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 功能特性 -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 style="font-size:2rem;font-weight:800;margin-bottom:0.5rem;">核心功能</h2>
+            <p style="color:var(--text-secondary);">强大的 AI 能力，简单的使用方式</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-up">
+                <div class="glass-card feature-card p-4">
+                    <div class="feature-icon bg-gradient-blue">
+                        <i class="bi bi-image"></i>
+                    </div>
+                    <h5 style="font-weight:700;margin-bottom:0.8rem;">图片智能识别</h5>
+                    <p style="color:var(--text-secondary);font-size:0.92rem;line-height:1.7;margin-bottom:0;">
+                        上传任意民族服饰图片，AI 自动识别所属民族，输出类别、置信度和详细特征分析。
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="glass-card feature-card p-4">
+                    <div class="feature-icon bg-gradient-purple">
+                        <i class="bi bi-list-check"></i>
+                    </div>
+                    <h5 style="font-weight:700;margin-bottom:0.8rem;">55 个民族覆盖</h5>
+                    <p style="color:var(--text-secondary);font-size:0.92rem;line-height:1.7;margin-bottom:0;">
+                        涵盖汉族及 54 个少数民族的传统服饰，包括维吾尔族、蒙古族、藏族、苗族等常见类别。
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="glass-card feature-card p-4">
+                    <div class="feature-icon bg-gradient-green">
+                        <i class="bi bi-search"></i>
+                    </div>
+                    <h5 style="font-weight:700;margin-bottom:0.8rem;">深度特征分析</h5>
+                    <p style="color:var(--text-secondary);font-size:0.92rem;line-height:1.7;margin-bottom:0;">
+                        不仅给出识别结果，还从色彩、纹样、款式、配饰等多角度分析服饰的视觉特征。
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-4" data-aos="fade-up">
+                <div class="glass-card feature-card p-4">
+                    <div class="feature-icon bg-gradient-pink">
+                        <i class="bi bi-plug"></i>
+                    </div>
+                    <h5 style="font-weight:700;margin-bottom:0.8rem;">RESTful API</h5>
+                    <p style="color:var(--text-secondary);font-size:0.92rem;line-height:1.7;margin-bottom:0;">
+                        提供标准 RESTful API 接口，支持图片上传识别和示例图片识别，方便集成到其他应用。
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="glass-card feature-card p-4">
+                    <div class="feature-icon bg-gradient-orange">
+                        <i class="bi bi-database"></i>
+                    </div>
+                    <h5 style="font-weight:700;margin-bottom:0.8rem;">数据集配套</h5>
+                    <p style="color:var(--text-secondary);font-size:0.92rem;line-height:1.7;margin-bottom:0;">
+                        配套 55 类民族服饰目标检测数据集，包含 YOLO 和 VOC 两种标注格式，可用于模型训练。
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="glass-card feature-card p-4">
+                    <div class="feature-icon bg-gradient-blue">
+                        <i class="bi bi-github"></i>
+                    </div>
+                    <h5 style="font-weight:700;margin-bottom:0.8rem;">完全开源</h5>
+                    <p style="color:var(--text-secondary);font-size:0.92rem;line-height:1.7;margin-bottom:0;">
+                        项目基于 MIT 协议开源，代码结构清晰，文档完善，欢迎 Star、Fork 和贡献代码。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 使用流程 -->
+<section class="py-5 mb-4">
+    <div class="container">
+        <div class="glass-card p-5" data-aos="fade-up">
+            <div class="text-center mb-4">
+                <h2 style="font-size:1.8rem;font-weight:800;margin-bottom:0.5rem;">快速开始</h2>
+                <p style="color:var(--text-secondary);">三步即可启动本地识别服务</p>
+            </div>
+            
+            <div class="row g-4 mt-3">
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <div class="feature-icon bg-gradient-blue mx-auto">
+                            <i class="bi bi-download"></i>
+                        </div>
+                        <h6 style="font-weight:700;margin-bottom:0.5rem;">1. 克隆项目</h6>
+                        <p style="color:var(--text-secondary);font-size:0.88rem;">
+                            从 GitHub 克隆仓库到本地，安装 Python 依赖
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <div class="feature-icon bg-gradient-purple mx-auto">
+                            <i class="bi bi-key"></i>
+                        </div>
+                        <h6 style="font-weight:700;margin-bottom:0.5rem;">2. 配置 API Key</h6>
+                        <p style="color:var(--text-secondary);font-size:0.88rem;">
+                            设置 DASHSCOPE_API_KEY 环境变量（阿里云百炼平台获取）
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <div class="feature-icon bg-gradient-green mx-auto">
+                            <i class="bi bi-play-circle"></i>
+                        </div>
+                        <h6 style="font-weight:700;margin-bottom:0.5rem;">3. 启动服务</h6>
+                        <p style="color:var(--text-secondary);font-size:0.88rem;">
+                            运行启动脚本，浏览器访问 http://127.0.0.1:5000 即可使用
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <a href="/detection" class="hero-btn hero-btn-primary">
+                    <i class="bi bi-rocket-takeoff"></i>立即体验
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

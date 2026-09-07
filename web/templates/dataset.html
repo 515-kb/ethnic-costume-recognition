@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+{% block title %}数据集 - 民族服饰智能识别系统{% endblock %}
+
+{% block extra_css %}
+<style>
+    .class-card {
+        transition: all 0.3s ease;
+        cursor: default;
+    }
+    
+    .class-card:hover {
+        transform: translateY(-3px);
+        border-color: rgba(99, 102, 241, 0.3);
+    }
+    
+    .class-index {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        font-weight: 600;
+    }
+    
+    .class-name {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin: 0.2rem 0;
+    }
+    
+    .class-name-en {
+        font-size: 0.82rem;
+        color: var(--text-secondary);
+    }
+    
+    .class-pinyin {
+        font-size: 0.75rem;
+        color: rgba(148, 163, 184, 0.6);
+        font-family: monospace;
+    }
+    
+    .filter-btn {
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: 1px solid rgba(255,255,255,0.1);
+        background: transparent;
+        color: var(--text-secondary);
+    }
+    
+    .filter-btn:hover, .filter-btn.active {
+        background: rgba(99, 102, 241, 0.15);
+        border-color: rgba(99, 102, 241, 0.3);
+        color: #fff;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1 class="page-title" data-aos="fade-right">数据集</h1>
+        <p class="page-subtitle" data-aos="fade-right" data-aos-delay="100">
+            民族服饰目标检测数据集，共 {{ classes_data.total }} 个类别，支持 YOLO 和 VOC 两种标注格式
+        </p>
+    </div>
+</section>
+
+<!-- 数据集概览 -->
+<section class="py-4">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-3 col-6" data-aos="fade-up">
+                <div class="glass-card stat-card">
+                    <div class="stat-icon bg-gradient-blue">
+                        <i class="bi bi-collection"></i>
+                    </div>
+                    <div class="stat-value" data-animate-number data-target="{{ classes_data.total }}">0</div>
+                    <div class="stat-label">服饰类别</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="glass-card stat-card">
+                    <div class="stat-icon bg-gradient-purple">
+                        <i class="bi bi-folder2-open"></i>
+                    </div>
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">数据集划分</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="glass-card stat-card">
+                    <div class="stat-icon bg-gradient-green">
+                        <i class="bi bi-bounding-box"></i>
+                    </div>
+                    <div class="stat-value">2</div>
+                    <div class="stat-label">标注格式</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="glass-card stat-card">
+                    <div class="stat-icon bg-gradient-orange">
+                        <i class="bi bi-tag"></i>
+                    </div>
+                    <div class="stat-value">检测</div>
+                    <div class="stat-label">任务类型</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 数据集说明 -->
+<section class="py-4">
+    <div class="container">
+        <div class="glass-card p-4 mb-4" data-aos="fade-up">
+            <h3 class="section-title"><i class="bi bi-info-circle"></i>数据集说明</h3>
+            <div class="section-divider"></div>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <h6 style="font-weight:600;margin-bottom:0.8rem;"><i class="bi bi-check2-circle me-2" style="color:var(--accent-green);"></i>数据集特点</h6>
+                    <ul style="color:var(--text-secondary);font-size:0.92rem;line-height:2;padding-left:1.2rem;">
+                        <li>覆盖 {{ classes_data.total }} 个民族的传统服饰类别</li>
+                        <li>包含训练集、验证集、测试集三个子集</li>
+                        <li>同时提供 YOLO 格式和 VOC 格式标注</li>
+                        <li>适用于目标检测任务训练和评估</li>
+                        <li>类别命名采用拼音，便于跨语言使用</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h6 style="font-weight:600;margin-bottom:0.8rem;"><i class="bi bi-folder me-2" style="color:var(--accent-purple);"></i>目录结构</h6>
+                    <pre style="background:rgba(0,0,0,0.3);border-radius:10px;padding:1rem;font-size:0.82rem;line-height:1.6;color:var(--text-secondary);overflow-x:auto;">shaoshuminzu(DST1138)/
+├── data.yaml          # YOLO 数据集配置
+├── images/            # 图片目录
+│   ├── train/
+│   ├── valid/
+│   └── test/
+├── labels/            # YOLO 格式标注
+│   ├── train/
+│   ├── valid/
+│   └── test/
+└── VOC/               # VOC 格式标注
+    ├── train/
+    ├── valid/
+    └── test/</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 类别列表 -->
+<section class="py-4 mb-4">
+    <div class="container">
+        <div class="glass-card p-4" data-aos="fade-up">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="section-title mb-0"><i class="bi bi-list-ul"></i>全部类别（{{ classes_data.total }} 个）</h3>
+                <input type="text" id="searchInput" placeholder="搜索民族..." 
+                       style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:0.5rem 1rem;color:var(--text-primary);font-size:0.9rem;width:200px;"
+                       oninput="filterClasses()">
+            </div>
+            <div class="section-divider"></div>
+            
+            <div class="row g-3" id="classGrid">
+                {% for cls in classes_data.classes %}
+                <div class="col-6 col-md-4 col-lg-3 class-item" 
+                     data-name="{{ cls.name }}" data-pinyin="{{ cls.pinyin }}" data-en="{{ cls.name_en }}">
+                    <div class="glass-card class-card p-3">
+                        <div class="class-index">#{{ "%02d"|format(cls.id + 1) }}</div>
+                        <div class="class-name">{{ cls.name }}</div>
+                        <div class="class-name-en">{{ cls.name_en }}</div>
+                        <div class="class-pinyin">{{ cls.pinyin }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div id="noResult" style="display:none;text-align:center;padding:3rem;color:var(--text-secondary);">
+                <i class="bi bi-search" style="font-size:2rem;opacity:0.3;"></i>
+                <p class="mt-2">未找到匹配的民族类别</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function filterClasses() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const items = document.querySelectorAll('.class-item');
+    let visibleCount = 0;
+    
+    items.forEach(item => {
+        const name = item.dataset.name.toLowerCase();
+        const pinyin = item.dataset.pinyin.toLowerCase();
+        const en = item.dataset.en.toLowerCase();
+        
+        if (name.includes(query) || pinyin.includes(query) || en.includes(query)) {
+            item.style.display = '';
+            visibleCount++;
+        } else {
+            item.style.display = 'none';
+        }
+    });
+    
+    document.getElementById('noResult').style.display = visibleCount === 0 ? 'block' : 'none';
+}
+</script>
+{% endblock %}
